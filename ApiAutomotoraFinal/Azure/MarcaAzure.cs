@@ -20,7 +20,7 @@ namespace ApiAutomotoraFinal.Azure
 
 
         //Abrir Conexiones
-        private static SqlCommand AbrirConexionSqlMarca(SqlConnection sqlConnection)
+        private static SqlCommand AbrirConexionSqlMarcas(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
             sqlCommand.CommandText = "SELECT * FROM Marca";
@@ -75,7 +75,7 @@ namespace ApiAutomotoraFinal.Azure
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var comando = AbrirConexionSqlMarca(sqlConnection);
+                var comando = AbrirConexionSqlMarcas(sqlConnection);
 
                 var dataTable = LLenadoTabla(comando);
 
