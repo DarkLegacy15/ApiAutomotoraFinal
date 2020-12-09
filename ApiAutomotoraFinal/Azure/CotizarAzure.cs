@@ -18,7 +18,7 @@ namespace ApiAutomotoraFinal.Azure
 
 
         //Abrir Conexiones
-        private static SqlCommand AbrirConexionSqlCotizar(SqlConnection sqlConnection)
+        private static SqlCommand AbrirConexionSqlCotizar2(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
             sqlCommand.CommandText = "SELECT * FROM Cotizar";
@@ -73,7 +73,7 @@ namespace ApiAutomotoraFinal.Azure
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var comando = AbrirConexionSqlCotizar(sqlConnection);
+                var comando = AbrirConexionSqlCotizar2(sqlConnection);
 
                 var dataTable = LLenadoTabla(comando);
 
