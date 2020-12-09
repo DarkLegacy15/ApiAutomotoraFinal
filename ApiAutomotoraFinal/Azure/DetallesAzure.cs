@@ -19,7 +19,7 @@ namespace ApiAutomotoraFinal.Azure
 
 
         //Abrir Conexiones
-        private static SqlCommand AbrirConexionSqlDetalle(SqlConnection sqlConnection)
+        private static SqlCommand AbrirConexionSqlDetalles(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
             sqlCommand.CommandText = "SELECT * FROM Detalle";
@@ -75,7 +75,7 @@ namespace ApiAutomotoraFinal.Azure
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var comando = AbrirConexionSqlDetalle(sqlConnection);
+                var comando = AbrirConexionSqlDetalles(sqlConnection);
 
                 var dataTable = LLenadoTabla(comando);
 
