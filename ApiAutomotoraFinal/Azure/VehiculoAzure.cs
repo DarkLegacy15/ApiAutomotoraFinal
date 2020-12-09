@@ -24,7 +24,7 @@ namespace ApiAutomotoraFinal.Azure
         private static SqlCommand AbrirConexionSqlVehiculos(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
-            sqlCommand.CommandText = "SELECT * FROM Vehiculos";
+            sqlCommand.CommandText = "SELECT * FROM Vehiculo";
             sqlConnection.Open();
             return sqlCommand;
         }
@@ -48,11 +48,11 @@ namespace ApiAutomotoraFinal.Azure
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 Vehiculo vehiculo = new Vehiculo();
-                vehiculo.IdVehiculo = int.Parse(dataTable.Rows[i]["IdVehiculos"].ToString());
+                vehiculo.IdVehiculo = int.Parse(dataTable.Rows[i]["idVehiculo"].ToString());
                 vehiculo.Modelo = dataTable.Rows[i]["Modelo"].ToString();
-                vehiculo.IdMarca = int.Parse(dataTable.Rows[i]["IdMarca"].ToString());
+                vehiculo.IdMarca = int.Parse(dataTable.Rows[i]["idMarca"].ToString());
                 vehiculo.Estilo = dataTable.Rows[i]["Estilo"].ToString();
-                vehiculo.IdTipo = int.Parse(dataTable.Rows[i]["IdTipo"].ToString());
+                vehiculo.IdTipo = int.Parse(dataTable.Rows[i]["idTipo"].ToString());
                 vehiculos.Add(vehiculo);
             }
 
@@ -63,11 +63,11 @@ namespace ApiAutomotoraFinal.Azure
             if (dataTable != null && dataTable.Rows.Count > 0)
             {
                 Vehiculo vehiculo = new Vehiculo();
-                vehiculo.IdVehiculo = int.Parse(dataTable.Rows[0]["IdVehiculos"].ToString());
+                vehiculo.IdVehiculo = int.Parse(dataTable.Rows[0]["idVehiculo"].ToString());
                 vehiculo.Modelo = dataTable.Rows[0]["Modelo"].ToString();
-                vehiculo.IdMarca = int.Parse(dataTable.Rows[0]["IdMarca"].ToString());
+                vehiculo.IdMarca = int.Parse(dataTable.Rows[0]["idMarca"].ToString());
                 vehiculo.Estilo = dataTable.Rows[0]["Estilo"].ToString();
-                vehiculo.IdTipo = int.Parse(dataTable.Rows[0]["IdTipo"].ToString());
+                vehiculo.IdTipo = int.Parse(dataTable.Rows[0]["idTipo"].ToString());
                 return vehiculo;
             }
             else
@@ -91,7 +91,7 @@ namespace ApiAutomotoraFinal.Azure
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var query = $"SELECT * FROM Vehiculos WHERE Modelo = '{modelo}'";
+                var query = $"SELECT * FROM Vehiculo WHERE Modelo = '{modelo}'";
 
                 var comando = AbrirConexionSqlVehiculos(sqlConnection, query);
 
@@ -105,7 +105,7 @@ namespace ApiAutomotoraFinal.Azure
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var query = $"SELECT * FROM Vehiculo WHERE IdVehiculo = '{id}'";
+                var query = $"SELECT * FROM Vehiculo WHERE idVehiculo = '{id}'";
 
                 var comando = AbrirConexionSqlVehiculos(sqlConnection, query);
 
@@ -122,12 +122,12 @@ namespace ApiAutomotoraFinal.Azure
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
-                sqlCommand.CommandText = "INSERT INTO Vehiculo (Modelo,IdMarca,Estilo,IdTipo) values (@nombre,@marca,estilo,tipo)";
+                sqlCommand.CommandText = "INSERT INTO Vehiculo (Modelo,idMarca,Estilo,idTipo) values (@nombre,@marca,@estilo,@tipo)";
 
                 sqlCommand.Parameters.AddWithValue("@nombre", vehiculo.Modelo);
-                sqlCommand.Parameters.AddWithValue("@nombre", vehiculo.IdMarca);
-                sqlCommand.Parameters.AddWithValue("@nombre", vehiculo.Estilo);
-                sqlCommand.Parameters.AddWithValue("@nombre", vehiculo.IdTipo);
+                sqlCommand.Parameters.AddWithValue("@marca", vehiculo.IdMarca);
+                sqlCommand.Parameters.AddWithValue("@estilo", vehiculo.Estilo);
+                sqlCommand.Parameters.AddWithValue("@tipo", vehiculo.IdTipo);
 
                 try
                 {
@@ -150,7 +150,7 @@ namespace ApiAutomotoraFinal.Azure
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
-                sqlCommand.CommandText = "DELETE FROM Vehiculo WHERE IdVehiculo = @id";
+                sqlCommand.CommandText = "DELETE FROM Vehiculo WHERE idVehiculo = @id";
 
                 sqlCommand.Parameters.AddWithValue("@id", id);
 
@@ -175,13 +175,13 @@ namespace ApiAutomotoraFinal.Azure
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
-                sqlCommand.CommandText = "UPDATE Vehiculo SET Modelo = @modelo, IdMarca = @marca, Estilo = @estilo, IdTipo = @tipo WHERE IdVehiculo = @IdVehiculo";
+                sqlCommand.CommandText = "UPDATE Vehiculo SET Modelo = @modelo, idMarca = @marca, Estilo = @estilo, idTipo = @tipo WHERE idVehiculo = @idVehiculo";
 
                 sqlCommand.Parameters.AddWithValue("@modelo", vehiculo.Modelo);
                 sqlCommand.Parameters.AddWithValue("@marca", vehiculo.IdMarca);
                 sqlCommand.Parameters.AddWithValue("@estilo", vehiculo.Estilo);
                 sqlCommand.Parameters.AddWithValue("@tipo", vehiculo.IdTipo);
-
+                sqlCommand.Parameters.AddWithValue("@idVehiculo", vehiculo.IdVehiculo);
                 try
                 {
                     sqlConnection.Open();
