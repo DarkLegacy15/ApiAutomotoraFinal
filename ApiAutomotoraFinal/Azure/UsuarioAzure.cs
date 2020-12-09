@@ -19,7 +19,7 @@ namespace ApiAutomotoraFinal.Azure
 
 
         //Abrir Conexiones
-        private static SqlCommand AbrirConexionSqlUsuario(SqlConnection sqlConnection)
+        private static SqlCommand AbrirConexionSqlUsuarios(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
             sqlCommand.CommandText = "SELECT * FROM Usuario";
@@ -46,11 +46,11 @@ namespace ApiAutomotoraFinal.Azure
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 Usuario usuarios = new Usuario();
-                usuarios.RutUsuario = dataTable.Rows[i]["IdVehiculos"].ToString();
-                usuarios.Nombre = dataTable.Rows[i]["Modelo"].ToString();
-                usuarios.Apellido =dataTable.Rows[i]["IdMarca"].ToString();
-                usuarios.Edad = int.Parse(dataTable.Rows[i]["IdTipo"].ToString());
-                usuarios.Email = dataTable.Rows[i]["Estilo"].ToString();
+                usuarios.RutUsuario = dataTable.Rows[i]["RutUsuario"].ToString();
+                usuarios.Nombre = dataTable.Rows[i]["Nombre"].ToString();
+                usuarios.Apellido =dataTable.Rows[i]["Apellido"].ToString();
+                usuarios.Edad = int.Parse(dataTable.Rows[i]["Edad"].ToString());
+                usuarios.Email = dataTable.Rows[i]["Email"].ToString();
                 vehiculos.Add(usuarios);
             }
 
@@ -61,11 +61,11 @@ namespace ApiAutomotoraFinal.Azure
             if (dataTable != null && dataTable.Rows.Count > 0)
             {
                 Usuario usuarios = new Usuario();
-                usuarios.RutUsuario = dataTable.Rows[0]["IdVehiculos"].ToString();
-                usuarios.Nombre = dataTable.Rows[0]["Modelo"].ToString();
-                usuarios.Apellido = dataTable.Rows[0]["IdMarca"].ToString();
-                usuarios.Edad = int.Parse(dataTable.Rows[0]["IdTipo"].ToString());
-                usuarios.Email = dataTable.Rows[0]["Estilo"].ToString();
+                usuarios.RutUsuario = dataTable.Rows[0]["RutUsuario"].ToString();
+                usuarios.Nombre = dataTable.Rows[0]["Nombre"].ToString();
+                usuarios.Apellido = dataTable.Rows[0]["Apellido"].ToString();
+                usuarios.Edad = int.Parse(dataTable.Rows[0]["Edad"].ToString());
+                usuarios.Email = dataTable.Rows[0]["Email"].ToString();
                 return usuarios;
             }
             else
@@ -74,11 +74,11 @@ namespace ApiAutomotoraFinal.Azure
             }
         }
 
-        public static List<Usuario> ObtenerUsuario()
+        public static List<Usuario> ObtenerUsuarios()
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
-                var comando = AbrirConexionSqlUsuario(sqlConnection);
+                var comando = AbrirConexionSqlUsuarios(sqlConnection);
 
                 var dataTable = LLenadoTabla(comando);
 
@@ -99,20 +99,7 @@ namespace ApiAutomotoraFinal.Azure
 
             }
         }
-        public static Usuario ObtenerUsuario(int edad)
-        {
-            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-            {
-                var query = $"SELECT * FROM Usuario WHERE Edad = '{edad}'";
-
-                var comando = AbrirConexionSqlUsuario(sqlConnection, query);
-
-                var dataTable = LLenadoTabla(comando);
-
-                return CreacionUsuario(dataTable);
-
-            }
-        }
+        
         public static int AgregarUsuario(Usuario usuarios)
         {
             int filasAfectadas = 0;

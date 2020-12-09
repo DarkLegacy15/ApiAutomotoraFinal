@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using ApiAutomotoraFinal.Models;
+using ApiAutomotoraFinal.Azure;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ApiAutomotoraFinal.Controllers
@@ -12,24 +13,46 @@ namespace ApiAutomotoraFinal.Controllers
     [ApiController]
     public class VehiculoController : ControllerBase
     {
-        // GET: api/<VehiculoController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET: api/Vehiculo/all
+        [HttpGet("all")]
+        public JsonResult ObtenerVehiculos()
         {
-            return new string[] { "value1", "value2" };
+            var VehiculosR = VehiculoAzure.ObtenerVehiculos();
+            return new JsonResult(VehiculosR);
         }
 
-        // GET api/<VehiculoController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/Vehiculo/{id}-{modelo}
+        [HttpGet("{Vehiculo}")]
+        public JsonResult ObtenerVehiculo(string vehiculo)
         {
-            return "value";
+            var conversionExitosa = int.TryParse(vehiculo, out int idConvertido);
+
+            Vehiculo VehiculoR;
+
+            if (conversionExitosa)
+            {
+                VehiculoR = VehiculoAzure.ObtenerVehiculo(idConvertido);
+            }
+            else
+            {
+                VehiculoR = VehiculoAzure.ObtenerVehiculo(vehiculo);
+            }
+
+            if (VehiculoR is null)
+            {
+                return new JsonResult($"Intente nuevamente con un parametro distinto a {vehiculo}");
+            }
+            else
+            {
+                return new JsonResult(VehiculoR);
+            }
         }
 
         // POST api/<VehiculoController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void AgregarVehiculo([FromBody] Vehiculo vehiculo)
         {
+            VehiculoAzure.AgregarVehiculo(vehiculo);
         }
 
         // PUT api/<VehiculoController>/5

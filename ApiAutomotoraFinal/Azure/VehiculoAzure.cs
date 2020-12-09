@@ -24,11 +24,12 @@ namespace ApiAutomotoraFinal.Azure
         private static SqlCommand AbrirConexionSqlVehiculos(SqlConnection sqlConnection)
         {
             SqlCommand sqlCommand = new SqlCommand(null, sqlConnection);
-            sqlCommand.CommandText = "SELECT * FROM Vehiculo";
+            sqlCommand.CommandText = "select * from Vehiculo";
             sqlConnection.Open();
             return sqlCommand;
         }
-        private static SqlCommand AbrirConexionSqlVehiculos(SqlConnection sqlConnection, string query)
+
+        private static SqlCommand AbrirConexionSqlVehiculo(SqlConnection sqlConnection, string query)
         {
             SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
             sqlConnection.Open();
@@ -42,6 +43,8 @@ namespace ApiAutomotoraFinal.Azure
             dataAdapter.Fill(dataTable);
             return dataTable;
         }
+
+
         private static List<Vehiculo> ListarVehiculos(DataTable dataTable)
         {
             vehiculos = new List<Vehiculo>();
@@ -76,6 +79,7 @@ namespace ApiAutomotoraFinal.Azure
             }
         }
 
+        
         public static List<Vehiculo> ObtenerVehiculos()
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -87,13 +91,15 @@ namespace ApiAutomotoraFinal.Azure
                 return ListarVehiculos(dataTable);
             }
         }
-        public static Vehiculo ObtenerVehiculos(string modelo)
+
+        
+        public static Vehiculo ObtenerVehiculo(string modelo)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
             {
                 var query = $"SELECT * FROM Vehiculo WHERE Modelo = '{modelo}'";
 
-                var comando = AbrirConexionSqlVehiculos(sqlConnection, query);
+                var comando = AbrirConexionSqlVehiculo(sqlConnection, query);
 
                 var dataTable = LLenadoTabla(comando);
 
@@ -107,7 +113,7 @@ namespace ApiAutomotoraFinal.Azure
             {
                 var query = $"SELECT * FROM Vehiculo WHERE idVehiculo = '{id}'";
 
-                var comando = AbrirConexionSqlVehiculos(sqlConnection, query);
+                var comando = AbrirConexionSqlVehiculo(sqlConnection, query);
 
                 var dataTable = LLenadoTabla(comando);
 
@@ -143,7 +149,7 @@ namespace ApiAutomotoraFinal.Azure
             }
         }
         
-        public static int EliminarVehiculoPorID(string id)
+        public static int EliminarVehiculoPorID(int id)
         {
             int filasAfectadas = 0;
 
